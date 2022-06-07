@@ -1,6 +1,15 @@
 package com.yayatotaxi.model
 
+import android.graphics.drawable.Drawable
 import java.io.Serializable
+import com.bumptech.glide.request.RequestOptions
+
+import com.bumptech.glide.Glide
+
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.request.target.Target
+import de.hdodenhof.circleimageview.CircleImageView
+
 
 class ModelLogin : Serializable {
 
@@ -79,6 +88,10 @@ class ModelLogin : Serializable {
         var luxurious_car: String? = null
         var pool_car: String? = null
         var social_status: String? = null
+
+
+
+
     }
 
 }

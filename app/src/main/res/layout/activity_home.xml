@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="homeViewModel"
+            type="com.yayatotaxi.viewmodel.HomeViewModel" />
+
+    </data>
+
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawer_layout"
@@ -11,7 +21,9 @@
             android:id="@+id/chlid_dashboard"
             layout="@layout/app_bar_dashboard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            bind:homeViewModelDashboard="@{homeViewModel}"
+           />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -22,7 +34,8 @@
 
             <include
                 android:id="@+id/child_nav_drawer"
-                layout="@layout/dashboard_drawer" />
+                layout="@layout/dashboard_drawer"
+                bind:homeViewModelDrawer="@{homeViewModel}"/>
 
         </com.google.android.material.navigation.NavigationView>
 

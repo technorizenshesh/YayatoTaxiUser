@@ -8,10 +8,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -20,78 +22,70 @@ import com.yayatotaxi.R
 import com.yayatotaxi.databinding.ActivityHomeBinding
 import com.yayatotaxi.model.ModelLogin
 import com.yayatotaxi.utils.*
+import com.yayatotaxi.viewmodel.HomeViewModel
+import com.yayatotaxi.viewmodel.LoginViewModel
 
 class HomeAct : AppCompatActivity(), OnMapReadyCallback {
     var mContext: Context = this@HomeAct
     lateinit var binding: ActivityHomeBinding
     lateinit var mapFragment: SupportMapFragment
-    lateinit var sharedPref: SharedPref
-    lateinit var modelLogin: ModelLogin
-    lateinit var tracker: GPSTracker
     var currentLocation: LatLng? = null
     lateinit var googleMap: GoogleMap
     var currentLocationMarker: Marker? = null
+    var homeViewModel: HomeViewModel?=null
+    lateinit var modelLogin: ModelLogin
+    lateinit var sharedPref: SharedPref
+    lateinit var tracker: GPSTracker
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        binding.homeViewModel = homeViewModel
+        homeViewModel!!.init(mContext,binding.drawerLayout)
+        sharedPref = SharedPref(mContext)
+        modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS)
+        tracker = GPSTracker(mContext)
+        currentLocation = LatLng(tracker.latitude, tracker.longitude)
         initViews()
+
+
+        homeViewModel!!.getUserHomeViewModel()!!.observe(this, {
+            if (it != null) {
+                modelLogin = it;
+                Log.e("profile data===", Gson()!!.toJson(modelLogin))
+                Toast.makeText(mContext,R.string.login_sucess, Toast.LENGTH_LONG)
+                sharedPref.setBooleanValue(AppConstant.IS_REGISTER, true)
+                sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin)
+                Glide.with(mContext).load(modelLogin.getResult()?.image)
+                    .error(R.drawable.user_ic)
+                    .placeholder(R.drawable.user_ic)
+                    .into(binding.childNavDrawer.userImg)
+                binding.childNavDrawer.tvUsername.setText(modelLogin.getResult()?.user_name)
+                binding.childNavDrawer.tvEmail.setText(modelLogin.getResult()?.email)
+
+            } else {
+                MyApplication.showAlert(mContext, getString(R.string.invalid_credentials))
+
+            }
+        })
+
+
     }
 
     private fun initViews() {
         mapFragment = (supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?)!!
         mapFragment.getMapAsync(this)
 
-        binding.chlidDashboard.navbar.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
 
-        binding.childNavDrawer.tvHome.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }
-
-        binding.childNavDrawer.tvProfile.setOnClickListener {
-            startActivity(Intent(mContext, UpdateProfielAct::class.java))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-        }
-
-
-        binding.childNavDrawer.signout.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            ProjectUtil.logoutAppDialog(mContext)
-        }
-
-
-
-
-     /*   binding.chlidDashboard.btnAddChild.setOnClickListener {
+    /*   binding.chlidDashboard.btnAddChild.setOnClickListener {
             startActivity(Intent(mContext, SchoolRideAct::class.java))
         }
 
 
 
-        binding.chlidDashboard.cvCarPool.setOnClickListener {
-            startActivity(
-                Intent(mContext, CarPoolHomeAct::class.java)
-                .putExtra("type", "classic")
-            )
-        }
 
-
-        binding.chlidDashboard.cvBookNow.setOnClickListener {
-            startActivity(
-                Intent(mContext, CarPoolHomeAct::class.java)
-                    .putExtra("type", "vtc")
-            )
-        }
-
-        binding.chlidDashboard.cvREntalTaxi.setOnClickListener {
-            startActivity(
-                Intent(mContext, NormalBookHomeAct::class.java)
-                    .putExtra("type", "rent")
-            )
-        }
 
         binding.childNavDrawer.tvPoolRequest.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -120,28 +114,16 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        setUserData()
+
+        homeViewModel!!.getUserProfileApiCallViewModel(modelLogin.getResult()!!.id!!)
+
 
        // getCurrentTaxiBookingApi()
        // if(modelLogin.getResult()!!.social_status.equals("False")) showAlert(mContext,"Please Complete your profile")
     }
 
 
-    fun setUserData(){
-        sharedPref = SharedPref(mContext)
-        modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS)
-        Glide.with(mContext).load(modelLogin.getResult()?.image)
-            .error(R.drawable.user_ic)
-            .placeholder(R.drawable.user_ic)
-            .into(binding.childNavDrawer.userImg)
-        binding.childNavDrawer.tvUsername.setText(modelLogin.getResult()?.user_name)
-        binding.childNavDrawer.tvEmail.setText(modelLogin.getResult()?.email)
-        Log.e("sfasdasdas", "modelLogin.getResult()?.image = " + modelLogin.getResult()?.image)
-        Log.e("sfasdasdas", "modelLogin Gson = " + Gson().toJson(modelLogin))
 
-        tracker = GPSTracker(mContext)
-        currentLocation = LatLng(tracker.latitude, tracker.longitude)
-    }
 
     override fun onMapReady(maps: GoogleMap) {
         googleMap = maps
@@ -154,13 +136,7 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return
         }
         googleMap.isMyLocationEnabled=true

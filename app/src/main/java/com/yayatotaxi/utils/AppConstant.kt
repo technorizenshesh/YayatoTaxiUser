@@ -1,5 +1,15 @@
 package com.yayatotaxi.utils
 
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import androidx.databinding.BindingAdapter
+import de.hdodenhof.circleimageview.CircleImageView
+import com.bumptech.glide.request.RequestOptions
+
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
+
+
 interface AppConstant {
 
     companion object {
@@ -39,6 +49,21 @@ interface AppConstant {
         var DEV_FOOD = "DEV_FOOD"
         var TAXI_DRIVER = "TAXI_DRIVER"
         var LAST = "last"
+    }
+
+
+    object DataBindingAdapters {
+
+        @BindingAdapter("imageSrc")
+        @JvmStatic
+        fun setImageResource(imageView: CircleImageView, resource: String) {
+            // imageView.setImageResource(resource)
+           // imageView.setImageURI(Uri.parse(resource))
+            Glide.with(imageView.context)
+                .load(resource).apply(RequestOptions().circleCrop())
+                .into(imageView)
+
+        }
     }
 
 }

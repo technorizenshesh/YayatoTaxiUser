@@ -2,6 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data >
+
+        <variable
+            name="homeViewModelDrawer"
+            type="com.yayatotaxi.viewmodel.HomeViewModel" />
+
+    </data>
+
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,6 +32,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/green_spalsh">
+
+                    <!--
+                    imageSrc="@{homeViewModelDrawer.getUserHomeViewModel().result.image}"
+-->
+
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/userImg"
@@ -46,7 +61,7 @@
                         android:layout_marginEnd="@dimen/_20sdp"
                         android:fontFamily="@font/poppins_semibold"
                         android:singleLine="true"
-                        android:text="Neil Woods"
+                        android:text="@{homeViewModelDrawer.userName}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
 
@@ -63,7 +78,7 @@
                         android:layout_marginBottom="@dimen/_20sdp"
                         android:fontFamily="@font/poppins_regular"
                         android:singleLine="true"
-                        android:text="neil@gmail.com"
+                        android:text="@{homeViewModelDrawer.getUserHomeViewModel().result.email}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_13sdp" />
 
@@ -90,6 +105,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
+                            android:onClick="@{()->homeViewModelDrawer.openCloseNavigationDrawer(tvHome)}"
                             android:padding="@dimen/_7sdp"
                             android:text="@string/home"
                             android:textAllCaps="false"
@@ -104,6 +120,7 @@
                             android:fontFamily="@font/poppins_semibold"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
+                            android:onClick="@{()->homeViewModelDrawer.profileClick(tvProfile)}"
                             android:padding="@dimen/_7sdp"
                             android:text="@string/profile"
                             android:textAllCaps="false"
@@ -138,6 +155,7 @@
                             android:textAllCaps="false"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15sdp" />
+
                         <TextView
                             android:id="@+id/tvPoolRequest"
                             android:layout_width="match_parent"
@@ -166,8 +184,8 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15sdp" />
 
-                        <EditText
-                            android:id="@+id/signout"
+                        <TextView
+                            android:id="@+id/tVSignOut"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
@@ -179,6 +197,7 @@
                             android:fontFamily="@font/poppins_bold"
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
+                            android:onClick="@{()->homeViewModelDrawer.logoutClick(tVSignOut)}"
                             android:padding="@dimen/_7sdp"
                             android:text="@string/sign_out"
                             android:textAllCaps="false"

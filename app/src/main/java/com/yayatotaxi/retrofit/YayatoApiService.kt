@@ -33,6 +33,13 @@ interface YayatoApiService {
     fun loginApiCall(@FieldMap params: Map<String, String>): Call<ResponseBody>
 
 
+    @FormUrlEncoded
+    @POST("get_profile")
+    fun profileApiCall(@FieldMap params: Map<String, String>): Call<ResponseBody>
+
+
+
+
 
     @FormUrlEncoded
     @POST("forgot_password")
@@ -54,6 +61,17 @@ interface YayatoApiService {
         @Part file1: MultipartBody.Part
     ): Call<ResponseBody>
 
+
+
+    @FormUrlEncoded
+    @POST("get_nearbuy_partner")
+    fun get_car_detial(
+        @Field("start_date") start_date: String,
+        @Field("end_date") end_date: String,
+        @Field("lat") lat: String,
+        @Field("lon") lon: String
+
+    ): Call<ResponseBody>
 
 
 }

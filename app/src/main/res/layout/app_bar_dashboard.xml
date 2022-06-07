@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data >
+        
+        <variable
+            name="homeViewModelDashboard"
+            type="com.yayatotaxi.viewmodel.HomeViewModel" />
+        
+    </data>
+    
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,7 +32,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/ic_menu" />
+                android:background="@drawable/ic_menu"
+                android:onClick="@{()->homeViewModelDashboard.openCloseNavigationDrawer(navbar)}"/>
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -47,7 +57,7 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/top_round_white_back"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,6 +121,7 @@
                     android:clickable="true"
                     android:elevation="@dimen/_5sdp"
                     android:gravity="center"
+                    android:onClick="@{()->homeViewModelDashboard.cvPoolClick(cvCarPool)}"
                     android:orientation="vertical"
                     android:padding="@dimen/_7sdp">
 
@@ -172,8 +183,8 @@
                     android:background="@drawable/back_selector"
                     android:clickable="true"
                     android:elevation="@dimen/_5sdp"
-
                     android:gravity="center"
+                    android:onClick="@{()->homeViewModelDashboard.bookNowClick(cvBookNow)}"
                     android:orientation="vertical"
                     android:padding="@dimen/_7sdp">
 
@@ -235,6 +246,7 @@
                     android:elevation="@dimen/_5sdp"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:onClick="@{()->homeViewModelDashboard.rentalTaxiClick(cvREntalTaxi)}"
                     android:padding="@dimen/_7sdp">
 
                     <ImageView
