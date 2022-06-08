@@ -54,10 +54,10 @@ class AdapterCarOnRentCopy (    val mContext: Context/*,
 
 
         holder.binding.btTrackDriver.setOnClickListener {
-            crOnRentListener.onClickCopy(data,"Pending",position)
+           // crOnRentListener.onClickCopy(data,"Pending",position)
         }
         holder.binding.btSend.setOnClickListener {
-            crOnRentListener.onClickCopy(data,"Cancel",position)
+         //   crOnRentListener.onClickCopy(data,"Cancel",position)
 
         }
 
