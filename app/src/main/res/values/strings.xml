@@ -149,6 +149,8 @@
     <string name="signup_sucess">Signup Successfully</string>
     <string name="profile_updated">Profile updated</string>
     <string name="invalid_input">invalid input</string>
+    <string name="select_car">select car</string>
+    <string name="please_select_payment_type">Please select payment type</string>
     <!--
         <string name="default_web_client_id">58116095033-rnrb6q07plc7tgdplahkprsdndmsetvs.apps.googleusercontent.com</string>
     -->

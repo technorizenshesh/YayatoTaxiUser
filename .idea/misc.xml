@@ -3,19 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/drawable/icon_launcher_background.xml" value="0.11666666666666667" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_car_pool_home.xml" value="0.1296875" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_forgot_pass.xml" value="0.1" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_normal_book_home.xml" value="0.10364583333333334" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_ride_option.xml" value="0.18" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_set_date_time.xml" value="0.17916666666666667" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_splash.xml" value="0.10231481481481482" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_terms_condition.xml" value="0.1" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_update_profile.xml" value="0.18333333333333332" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/activity_verify.xml" value="0.18541666666666667" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/adapter_car_on_rent.xml" value="0.17916666666666667" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/app_bar_dashboard.xml" value="0.1" />
         <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/dashboard_drawer.xml" value="0.1234375" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/dialog_search_driver.xml" value="0.1296875" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/layout/item_ride_book.xml" value="0.1" />
+        <entry key="..\:/MyProjects/YayatoTaxiUser/app/src/main/res/mipmap-anydpi-v26/ico_launcher.xml" value="0.11666666666666667" />
       </map>
     </option>
   </component>

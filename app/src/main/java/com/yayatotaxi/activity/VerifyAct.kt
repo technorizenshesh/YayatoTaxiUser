@@ -81,14 +81,14 @@ class VerifyAct : AppCompatActivity(),MySMSBroadcastReceiver.OTPReceiveListener 
         paramHash = intent.getSerializableExtra("resgisterHashmap") as HashMap<String, String>
         fileHashMap = intent.getSerializableExtra("fileHashMap") as HashMap<String, File>
 
-        if (InternetConnection.checkConnection(mContext)) {
+       /* if (InternetConnection.checkConnection(mContext)) {
             sendVerificationCode()
         } else {
             MyApplication.showConnectionDialog(mContext)
-        }
+        }*/
 
 
-        startSMSListener()
+       // startSMSListener()
 
 
         ivBack.setOnClickListener { finish() }
@@ -164,9 +164,19 @@ class VerifyAct : AppCompatActivity(),MySMSBroadcastReceiver.OTPReceiveListener 
                     et4.text.toString().trim() +
                     et5.text.toString().trim() +
                     et6.text.toString().trim()
-            ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait))
-            val credential = PhoneAuthProvider.getCredential(id!!, otpFull)
-            signInWithPhoneAuthCredential(credential)
+          //  ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait))
+         //   val credential = PhoneAuthProvider.getCredential(id!!, otpFull)
+          //  signInWithPhoneAuthCredential(credential)
+
+            if(otpFull.equals("000000")){
+                if (InternetConnection.checkConnection(mContext)) signupViewModel!!.signupApiCallViewModel(paramHash["first_name"]!!,paramHash["last_name"]!!
+                    ,paramHash["email"]!!,paramHash["mobile"]!!,paramHash["address"]!!,paramHash["register_id"]!!,paramHash["lat"]!!
+                    , paramHash["lon"]!!,paramHash["password"]!!,paramHash["type"]!!,"1",fileHashMap["image"]!!)
+                else MyApplication.showConnectionDialog(mContext)
+            }
+            else  Toast.makeText(mContext, getString(R.string.invalid_otp), Toast.LENGTH_SHORT).show()
+
+
         }
     }
 

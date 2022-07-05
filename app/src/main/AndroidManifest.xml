@@ -34,11 +34,11 @@
     <application
         android:name=".utils.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ico_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ico_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
@@ -112,6 +112,18 @@
 
 
         <activity android:name=".activity.SetDateTimeAct"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+        <activity android:name=".activity.RideOptionAct"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+        <activity android:name=".activity.TrackAct"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"/>

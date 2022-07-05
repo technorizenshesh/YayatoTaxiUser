@@ -74,4 +74,55 @@ interface YayatoApiService {
     ): Call<ResponseBody>
 
 
+    @FormUrlEncoded
+    @POST("add_car_request")
+    fun add_car_request(
+/*
+        @Field("status") status: String,
+*/
+        @Field("car_detail_id") car_detail_id: String,
+        @Field("driver_id") driver_id: String,
+          /*  @Field("lat") lat: String,
+            @Field("lon") lon: String*/
+
+
+    ): Call<ResponseBody>
+
+
+
+
+
+    @FormUrlEncoded
+    @POST("get_car_type_list")
+    fun getCarList(
+        @Field("picuplat") picuplat: String,
+        @Field("pickuplon") pickuplon: String,
+        @Field("droplat") droplat: String,
+        @Field("droplon") droplon: String
+    ): Call<ResponseBody>
+
+
+
+    @FormUrlEncoded
+    @POST("booking_request")
+    fun newBookingRequest(
+        @Field("user_id") user_id: String,
+        @Field("car_type_id") cartype_id: String,
+        @Field("picuplat") picuplat: String,
+        @Field("pickuplon") pickuplon: String,
+        @Field("booktype") booktype: String,
+        @Field("amount") amount: String,
+        @Field("picuplocation") picuplocation: String,
+        @Field("dropofflocation") dropofflocation: String,
+        @Field("droplat") droplat: String,
+        @Field("droplon") droplon: String,
+        @Field("picklatertime") picklatertime: String,
+        @Field("picklaterdate") picklaterdate: String,
+        @Field("timezone")timezone: String
+/*
+        @Field("seats_avaliable_pool") seats_avaliable_pool: String
+*/
+    ): Call<ResponseBody>
+
+
 }

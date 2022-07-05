@@ -227,7 +227,7 @@ class SetDateTimeAct : AppCompatActivity(), CarOnRentCopyListener {
     }
 
 
-/*
+
 
     private fun get_car_on_rentApi(id: String, status: String,driverId: String) {
 
@@ -274,10 +274,11 @@ class SetDateTimeAct : AppCompatActivity(), CarOnRentCopyListener {
         })
     }
 
+/*
     private fun update_car_request_statusApi(id:String,status:String) {
         ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait))
-        val api: YayatoApiService = ApiClient.getClient(mContext)!!.create(YayatoApiService::class.java)
-        val call: Call<ResponseBody> = api.update_car_request_status(
+    //    val api: YayatoApiService = ApiClient.getClient(mContext)!!.create(YayatoApiService::class.java)
+   //     val call: Call<ResponseBody> = api.update_car_request_status(
             id,
             status
         )
@@ -313,11 +314,15 @@ class SetDateTimeAct : AppCompatActivity(), CarOnRentCopyListener {
     }
 */
 
+
     override fun onClickCopy(poolDetails: CarListModel.Result, status: String, position: Int) {
-        if(status.equals("Cancel")){
+       /* if(status.equals("Cancel")){
            // update_car_request_statusApi(poolDetails?.id!!,status)
 
         }else{
-          //  get_car_on_rentApi(poolDetails.id.toString(),status,"")
-        }    }
+            get_car_on_rentApi(poolDetails.id.toString(),status,"")
+        }*/
+        get_car_on_rentApi(poolDetails.id.toString(),status,"")
+
+    }
 }
