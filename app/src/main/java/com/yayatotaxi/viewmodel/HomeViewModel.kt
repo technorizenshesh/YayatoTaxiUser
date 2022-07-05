@@ -69,10 +69,10 @@ class HomeViewModel(application: Application): AndroidViewModel(application) ,Ob
 
 
     fun bookNowClick(view: View){
-    //    context!!.startActivity(Intent(context, CarPoolHomeAct::class.java)
-    //        .putExtra("type", "vtc"))
+        context!!.startActivity(Intent(context, CarPoolHomeAct::class.java)
+            .putExtra("type", "vtc"))
       //  openCloseNavigationDrawer(view)
-        Toast.makeText(context,"Coming soon...",Toast.LENGTH_LONG).show()
+      //  Toast.makeText(context,"Coming soon...",Toast.LENGTH_LONG).show()
 
     }
 

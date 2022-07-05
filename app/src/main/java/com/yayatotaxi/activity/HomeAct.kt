@@ -140,6 +140,8 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         googleMap.isMyLocationEnabled=true
+        tracker = GPSTracker(mContext)
+        currentLocation = LatLng(tracker.latitude, tracker.longitude)
         showMarkerCurrentLocation(currentLocation!!)
     }
 
