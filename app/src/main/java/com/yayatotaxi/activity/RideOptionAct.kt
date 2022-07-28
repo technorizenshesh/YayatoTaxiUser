@@ -3,8 +3,10 @@ package com.yayatotaxi.activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -18,6 +20,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -32,6 +35,7 @@ import com.yayatotaxi.directionhelpers.TaskLoadedCallback
 import com.yayatotaxi.listerner.CarListener
 import com.yayatotaxi.model.ModelCarsType
 import com.yayatotaxi.model.ModelLogin
+import com.yayatotaxi.notification.Config
 import com.yayatotaxi.retrofit.ApiClient
 import com.yayatotaxi.retrofit.YayatoApiService
 import com.yayatotaxi.utils.AppConstant
@@ -83,6 +87,24 @@ class RideOptionAct : AppCompatActivity(), CarListener, OnMapReadyCallback, Task
 
     private var latLngSource: LatLng? = null
     private var latLngDestination: LatLng? = null
+
+
+    val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent != null) {
+                if (intent.getStringExtra("status").equals("Cancel")) {
+                    dialogSerach.dismiss()
+                }
+                else{
+                   startActivity(Intent(mContext,TrackAct::class.java))
+                    finish()
+                }
+                }
+        }
+    }
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,6 +230,15 @@ class RideOptionAct : AppCompatActivity(), CarListener, OnMapReadyCallback, Task
         super.onResume()
 //        getCars()
         getEstimateAmountApi()
+        LocalBroadcastManager.getInstance(mContext)
+            .registerReceiver(receiver, IntentFilter(Config.GET_DATA_NOTIFICATION))
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(mContext)
+            .unregisterReceiver(receiver)
     }
 
     private fun itit() {

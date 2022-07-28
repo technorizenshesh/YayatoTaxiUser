@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,9 +22,17 @@ import com.google.gson.Gson
 import com.yayatotaxi.R
 import com.yayatotaxi.databinding.ActivityHomeBinding
 import com.yayatotaxi.model.ModelLogin
+import com.yayatotaxi.model.ModelTaxiRequest
+import com.yayatotaxi.retrofit.ApiClient
+import com.yayatotaxi.retrofit.YayatoApiService
 import com.yayatotaxi.utils.*
 import com.yayatotaxi.viewmodel.HomeViewModel
 import com.yayatotaxi.viewmodel.LoginViewModel
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeAct : AppCompatActivity(), OnMapReadyCallback {
     var mContext: Context = this@HomeAct
@@ -36,6 +45,7 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
     lateinit var modelLogin: ModelLogin
     lateinit var sharedPref: SharedPref
     lateinit var tracker: GPSTracker
+    var requestId:String=""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,9 +117,11 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
             startActivity(Intent(mContext, RideHistoryAct::class.java))
         }
 
+     */
+
         binding.chlidDashboard.goDetail.setOnClickListener {
             startActivity(Intent(mContext, TrackAct::class.java).putExtra("id", requestId))
-        }*/
+        }
     }
 
     override fun onResume() {
@@ -118,7 +130,7 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
         homeViewModel!!.getUserProfileApiCallViewModel(modelLogin.getResult()!!.id!!)
 
 
-       // getCurrentTaxiBookingApi()
+        getCurrentTaxiBookingApi()
        // if(modelLogin.getResult()!!.social_status.equals("False")) showAlert(mContext,"Please Complete your profile")
     }
 
@@ -185,5 +197,92 @@ class HomeAct : AppCompatActivity(), OnMapReadyCallback {
     private fun getCameraPositionWithBearing(latLng: LatLng): CameraPosition {
         return CameraPosition.Builder().target(latLng).zoom(16f).build()
     }
+
+
+
+    private fun getCurrentTaxiBookingApi() {
+//        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait))
+        val api: YayatoApiService = ApiClient.getClient(mContext)!!.create(YayatoApiService::class.java)
+        val call: Call<ResponseBody> = api.getCurrentTaxiBooking(
+            modelLogin.getResult()?.id.toString(),
+            AppConstant.USER
+        )
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                ProjectUtil.pauseProgressDialog()
+                try {
+                    val responseString = response.body()!!.string()
+                    val jsonObject = JSONObject(responseString)
+                    Log.e("CurrentTaxiBooking", "responseString = $responseString")
+                    if (jsonObject.getString("status") == "1") {
+                        val modelTaxiRequest: ModelTaxiRequest =
+                            Gson().fromJson(responseString, ModelTaxiRequest::class.java)
+                        requestId = modelTaxiRequest.getResult()?.get(0)?.id.toString()
+                        binding.chlidDashboard.tvDateTime.text =
+                            modelTaxiRequest.getResult()?.get(0)?.req_datetime
+                        binding.chlidDashboard.tvFrom.text =
+                            modelTaxiRequest.getResult()?.get(0)?.picuplocation
+                        binding.chlidDashboard.etDestination.text =
+                            modelTaxiRequest.getResult()?.get(0)?.dropofflocation
+                        binding.chlidDashboard.tvStatus.text =
+                            modelTaxiRequest.getResult()?.get(0)?.status
+
+                        if(modelTaxiRequest.getResult()?.get(0)?.driver_details?.size!! >0) {
+
+                            binding.chlidDashboard.tvName.text =
+                                modelTaxiRequest.getResult()?.get(0)?.driver_details!![0].user_name
+                            binding.chlidDashboard.tvEmail.text =
+                                modelTaxiRequest.getResult()?.get(0)?.driver_details!![0].email
+                            Glide.with(mContext)
+                                .load(
+                                    modelTaxiRequest.getResult()?.get(0)?.driver_details!![0].image
+                                )
+                                .error(R.drawable.user_ic)
+                                .placeholder(R.drawable.user_ic)
+                                .into(binding.chlidDashboard.image)
+                            binding.chlidDashboard.layoutDriver.visibility= View.VISIBLE
+
+                        }else{
+                            binding.chlidDashboard.layoutDriver.visibility= View.GONE
+
+                        }
+
+//                        if (modelTaxiRequest.getResult()?.get(0)?.status.equals("Pending")) {
+//                            binding.chlidDashboard.btAccept.visibility = View.VISIBLE
+//                            binding.chlidDashboard.btDecline.visibility = View.VISIBLE
+//
+//                        } else {
+//                            binding.chlidDashboard.btAccept.visibility = View.GONE
+//                            binding.chlidDashboard.btDecline.visibility = View.GONE
+//                        }
+
+                        binding.chlidDashboard.currentCardRequest.visibility = View.VISIBLE
+                        binding.chlidDashboard.serviceLayout.visibility = View.GONE
+
+
+                    } else {
+//                        MyApplication.showAlert(mContext, getString(R.string.user_already_exits))
+                        binding.chlidDashboard.currentCardRequest.visibility = View.GONE
+                        binding.chlidDashboard.serviceLayout.visibility = View.VISIBLE
+
+
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(mContext, "Exception = " + e.message, Toast.LENGTH_SHORT).show()
+                    Log.e("Exception", "Exception = " + e.message)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                ProjectUtil.pauseProgressDialog()
+                Log.e("Exception", "Throwable = " + t.message)
+
+
+            }
+
+        })
+    }
+
 
 }

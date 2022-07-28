@@ -125,4 +125,17 @@ interface YayatoApiService {
     ): Call<ResponseBody>
 
 
+
+    @FormUrlEncoded
+    @POST("get_current_booking")
+    fun getCurrentTaxiBooking(
+        @Field("user_id") user_id: String,
+        @Field("type") type: String
+    ): Call<ResponseBody>
+
+
+    @FormUrlEncoded
+    @POST("get_lat_lon")
+    fun get_lat_lon(@Field("user_id") user_id: String): Call<ResponseBody>
+
 }
